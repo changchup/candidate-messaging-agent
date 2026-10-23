@@ -1,0 +1,7 @@
+candidate_id,first_name,last_name,email,current_title,location,timezone,skills,notes,applied_job_id,updated_at
+c-900,Valid,Person,valid.person@example.com,Engineer,Somewhere,UTC,Go,,j-001,2026-10-01T00:00:00Z
+c-901,No,Email,,Engineer,Somewhere,UTC,,,j-001,2026-10-01T00:00:00Z
+c-902,Bad,Email,not-an-email,Engineer,Somewhere,UTC,,,j-001,2026-10-01T00:00:00Z
+c-903,Bad,Date,bad.date@example.com,Engineer,Somewhere,UTC,,,j-001,last tuesday
+,Missing,Id,missing.id@example.com,Engineer,Somewhere,UTC,,,j-001,2026-10-01T00:00:00Z
+c-900,Duplicate,Id,dup@example.com,Engineer,Somewhere,UTC,,,j-001,2026-10-01T00:00:00Z

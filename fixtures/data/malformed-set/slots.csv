@@ -1,0 +1,5 @@
+slot_id,job_id,starts_at,duration_minutes,interviewer
+s-900,j-001,2026-11-01T10:00:00Z,45,Valid Interviewer
+s-901,j-001,2026-11-01T10:00:00Z,-30,Negative Duration
+s-902,j-001,tomorrow,45,Bad Date
+s-903,j-001,2026-11-01T10:00:00Z,forty-five,Text Duration

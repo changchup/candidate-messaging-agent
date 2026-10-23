@@ -1,0 +1,10 @@
+slot_id,job_id,starts_at,duration_minutes,interviewer
+s-101,j-001,2026-10-28T21:00:00Z,45,Sam Lee
+s-102,j-001,2026-10-29T22:00:00Z,45,Sam Lee
+s-103,j-001,2026-10-30T09:00:00Z,45,Riya Patel
+s-100,j-001,2026-10-01T21:00:00Z,45,Sam Lee
+s-201,j-002,2026-10-27T10:00:00Z,60,Ana Torres
+s-202,j-002,2026-10-28T14:00:00Z,60,Ana Torres
+s-203,j-002,2026-10-29T23:30:00Z,60,Ben Ito
+s-401,j-004,2026-09-15T10:00:00Z,45,Dana Ruiz
+s-402,j-004,2026-09-16T10:00:00Z,45,Dana Ruiz

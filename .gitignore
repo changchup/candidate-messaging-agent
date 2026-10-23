@@ -10,4 +10,4 @@ test-results/
 playwright-report/
 reports/tmp/
 .DS_Store
-data/
+/data/

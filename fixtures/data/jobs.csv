@@ -1,0 +1,5 @@
+job_id,title,team,location,hiring_manager,interview_format,salary_range,description
+j-001,Senior Backend Engineer,Payments,Remote (APAC/EMEA),Sam Lee,video,"NZD 170,000–200,000",Own the payments ledger services in TypeScript and PostgreSQL.
+j-002,Platform Engineer,Infrastructure,"London, UK",Ana Torres,video,,Build the internal developer platform on Kubernetes and Terraform.
+j-003,Data Engineer,Analytics,"Berlin, DE",Chris Park,onsite,,Design batch and streaming pipelines with dbt and Kafka.
+j-004,Machine Learning Engineer,AI,"Madrid, ES",Dana Ruiz,video,,Train and ship ranking models.
