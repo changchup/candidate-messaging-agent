@@ -75,7 +75,7 @@ Tool results are zod-validated; an invalid tool response is returned to the LLM 
 - Node 24, TypeScript 5 (strict), ESM
 - API: Fastify 5, zod for all schemas
 - Agent: `@anthropic-ai/sdk`, hand-rolled orchestrator. Agent model `claude-sonnet-5-5`; eval judge `claude-haiku-5-5`
-- State: SQLite via `better-sqlite3`
+- State: SQLite via built-in `node:sqlite` (no native build step)
 - Data source: CSV fixtures (ATS-export shape) parsed with `csv-parse`
 - UI: React + Vite (single page), served by Fastify in production build
 - Logs: pino (JSON, `runId` on every line)

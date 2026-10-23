@@ -64,7 +64,7 @@ Time budget: A+B ≈ 1h15, C ≈ 30m, D ≈ 40m, E ≈ 45m, F ≈ 30m (≈ 3h40)
 | Timebox overrun | Phases ordered so a cut after D still ships a complete tested app; evals use small dataset; UI deliberately minimal |
 | Real-model non-determinism breaks tests | Only `evals/` touch the real model; repeats + pass-rate thresholds; baseline comparison |
 | LLM-judge unreliability | Deterministic checks carry tool accuracy/completion/failure/safety; judge used only for groundedness/relevance with explicit rubric, scores recorded with rationale |
-| `better-sqlite3` native build issues on CI | Pin Node 24 in CI; fallback `node:sqlite` (built into Node 24) if install fails |
+| `node:sqlite` is experimental | Pinned Node 24; store isolated behind `RunStore` so swapping to better-sqlite3 is one file |
 | Prompt injection via candidate notes | Tool output wrapped as data in prompt; eval case + guardrail for it |
 | No API key available when evaluating the submission | Committed eval report; everything else runs with `LLM_MODE=fake` |
 
