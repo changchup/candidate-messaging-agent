@@ -1,6 +1,6 @@
 # Spec: Candidate Messaging Agent
 
-Status: **Draft — awaiting review**
+Status: **Approved 2026-10-23**
 Source brief: Intuitive.AI Lab Assessment — Senior Platform Engineer (AI). Timebox 2–4h.
 
 ## Objective
@@ -222,8 +222,8 @@ No coverage % target; instead every guardrail and every state transition must ha
 
 Real ATS/email integrations, real auth (OIDC), multiple message types, multi-tenant data, streaming UI, OpenTelemetry export, eval dashboards, red-team suite expansion, i18n.
 
-## Open Questions
+## Decisions (resolved open questions)
 
-1. Is there a preferred GitHub org/repo name for the public submission?
-2. OK to commit generated reports (`reports/`) with representative real-model eval output? (Proposed: yes, small files.)
-3. Rough time split proposal: ~1h app+agent, ~1h tests, ~45m evals, ~30m docs/CI. Adjust?
+1. Repo name: `candidate-messaging-agent` (public, under the user's GitHub account).
+2. Representative test and real-model eval output is committed under `reports/`.
+3. Time split: ~1h app+agent, ~1h tests, ~45m evals, ~30m docs/CI.
