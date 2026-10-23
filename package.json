@@ -5,7 +5,7 @@
   "scripts": {
     "test": "vitest run",
     "dev": "concurrently -k -n api,web \"tsx watch --env-file-if-exists=.env src/server.ts\" \"vite\"",
-    "start": "node --env-file-if-exists=.env src/server.ts",
+    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning src/server.ts",
     "build": "vite build",
     "typecheck": "tsc",
     "lint": "eslint .",
