@@ -19,15 +19,17 @@ export function buildApp(ctx: AppContext, opts: { webDir?: string } = {}): Fasti
   runRoutes(app, ctx);
 
   const webDir = resolve(opts.webDir ?? 'dist/web');
-  if (existsSync(webDir)) {
-    app.register(fastifyStatic, { root: webDir });
-    app.setNotFoundHandler((request, reply) =>
-      request.url.startsWith('/api/')
-        ? reply.status(404).send({
+  const serveWeb = existsSync(webDir);
+  if (serveWeb) app.register(fastifyStatic, { root: webDir });
+
+  app.setNotFoundHandler((request, reply) =>
+    serveWeb && request.method === 'GET' && !request.url.startsWith('/api/')
+      ? reply.sendFile('index.html')
+      : reply
+          .status(404)
+          .send({
             error: { code: 'NOT_FOUND', message: `No route ${request.method} ${request.url}` },
-          })
-        : reply.sendFile('index.html'),
-    );
-  }
+          }),
+  );
   return app;
 }

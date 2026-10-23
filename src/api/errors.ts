@@ -59,10 +59,4 @@ export function registerErrorHandler(app: FastifyInstance) {
     request.log.error({ err: error }, 'unhandled error');
     return send(500, 'INTERNAL_ERROR', 'Something went wrong');
   });
-
-  app.setNotFoundHandler((request, reply) =>
-    reply
-      .status(404)
-      .send({ error: { code: 'NOT_FOUND', message: `No route ${request.method} ${request.url}` } }),
-  );
 }

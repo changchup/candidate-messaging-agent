@@ -59,3 +59,23 @@ describe('unknown routes', () => {
     expect(res.json()).toEqual({ error: { code: 'NOT_FOUND', message: 'No route GET /api/nope' } });
   });
 });
+
+describe('web UI hosting', () => {
+  it('serves index.html for client routes but still 404s unknown API routes', async () => {
+    const { mkdtempSync, writeFileSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const { tmpdir } = await import('node:os');
+    const { buildApp } = await import('../../src/api/app.ts');
+    const dir = mkdtempSync(join(tmpdir(), 'web-'));
+    writeFileSync(join(dir, 'index.html'), '<div id="root"></div>');
+    const { ctx } = buildTestApi();
+    const app = buildApp(ctx, { webDir: dir });
+
+    const page = await app.inject({ method: 'GET', url: '/runs/123' });
+    expect(page.statusCode).toBe(200);
+    expect(page.body).toContain('id="root"');
+    const api = await app.inject({ method: 'GET', url: '/api/nope', headers: VIEWER });
+    expect(api.statusCode).toBe(404);
+    expect(api.json().error.code).toBe('NOT_FOUND');
+  });
+});
