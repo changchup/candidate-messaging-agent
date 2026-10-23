@@ -81,12 +81,12 @@ See [`plan.md`](./plan.md) and [`../SPEC.md`](../SPEC.md). Each task ends with g
 
 ## Phase F — Ship
 
-- [ ] **14. CI workflow**
+- [x] **14. CI workflow**
   - Acceptance: GitHub Actions: PR job (lint, typecheck, test, e2e w/ artifacts); main job adds eval smoke (if secret present); scheduled weekly full eval.
   - Verify: workflow passes on GitHub after push.
   - Files: `.github/workflows/ci.yml`, `.github/workflows/eval-nightly.yml`
 
-- [ ] **15. README, reports, publish**
+- [x] **15. README, reports, publish**
   - Acceptance: README covers setup, architecture diagram, decisions, assumptions, test strategy, eval method, CI mapping, limitations, next steps; test report output committed; public repo `candidate-messaging-agent` created and pushed.
   - Verify: fresh clone → `npm install && npm test && npm run test:e2e` green with no key.
   - Files: `README.md`, `reports/test-summary.md`
