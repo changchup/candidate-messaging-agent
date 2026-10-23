@@ -15,6 +15,9 @@ const ConfigSchema = z.object({
   SLOTS_SOURCE: z.enum(['valid', 'malformed']).default('valid'),
   AUTH_TOKENS: z.string().default('recruiter-token:recruiter,viewer-token:viewer'),
   LOG_LEVEL: z.string().default('info'),
+  /** Pin "now" (ISO timestamp) for demos, browser tests and evals against fixture dates. */
+  CLOCK_NOW: z.iso.datetime({ offset: true }).optional(),
+  LLM_TIMEOUT_MS: z.coerce.number().int().positive().default(20_000),
 });
 
 export type Config = z.infer<typeof ConfigSchema> & { tokens: Map<string, Role> };
