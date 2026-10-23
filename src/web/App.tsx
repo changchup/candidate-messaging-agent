@@ -425,7 +425,10 @@ function Timeline({ events }: { events: RunEventDto[] }) {
       <summary>Execution history ({events.length} events)</summary>
       <ol>
         {events.map((e) => (
-          <li key={e.seq} className={`ev ev-${e.type}${(e.data.violations as string[] | undefined)?.length ? ' ev-blocking' : ''}`}>
+          <li
+            key={e.seq}
+            className={`ev ev-${e.type}${(e.data.violations as string[] | undefined)?.length ? ' ev-blocking' : ''}`}
+          >
             <span className="muted">{new Date(e.at).toLocaleTimeString()}</span>{' '}
             <code>{e.type}</code> {describeEvent(e)}
           </li>

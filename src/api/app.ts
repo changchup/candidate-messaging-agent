@@ -25,11 +25,9 @@ export function buildApp(ctx: AppContext, opts: { webDir?: string } = {}): Fasti
   app.setNotFoundHandler((request, reply) =>
     serveWeb && request.method === 'GET' && !request.url.startsWith('/api/')
       ? reply.sendFile('index.html')
-      : reply
-          .status(404)
-          .send({
-            error: { code: 'NOT_FOUND', message: `No route ${request.method} ${request.url}` },
-          }),
+      : reply.status(404).send({
+          error: { code: 'NOT_FOUND', message: `No route ${request.method} ${request.url}` },
+        }),
   );
   return app;
 }
