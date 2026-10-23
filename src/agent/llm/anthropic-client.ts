@@ -9,7 +9,6 @@ export function createAnthropicClient(opts: {
   apiKey?: string;
   /** Injected in tests. */
   messages?: MessagesApi;
-  temperature?: number;
 }): LlmClient {
   // Retries are owned by the orchestrator so every attempt is visible in the run history.
   const messages = opts.messages ?? new Anthropic({ apiKey: opts.apiKey, maxRetries: 0 }).messages;
@@ -28,7 +27,6 @@ export function createAnthropicClient(opts: {
               description: t.description,
               input_schema: t.inputSchema as Anthropic.Tool.InputSchema,
             })),
-            ...(opts.temperature !== undefined ? { temperature: opts.temperature } : {}),
           },
           { signal },
         );
