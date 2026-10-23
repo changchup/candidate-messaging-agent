@@ -325,6 +325,11 @@ function RunDetail(props: {
 
       {run.draft && (
         <>
+          {run.draft.recruiterNotes && (
+            <p className="banner info" data-testid="recruiter-notes">
+              <strong>Assistant note (not sent):</strong> {run.draft.recruiterNotes}
+            </p>
+          )}
           <p className="muted">To: {run.recipient}</p>
           <label>
             Subject

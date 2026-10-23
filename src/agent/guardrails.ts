@@ -24,7 +24,7 @@ const PROTECTED_PATTERNS: [string, RegExp][] = [
   ['age', /\b(how old|your age|date of birth|year of birth|born in \d{4}|too old|too young)\b/i],
   [
     'family status',
-    /\b(pregnan\w*|maternity|paternity|family plans?|plan(s|ning)? (to have|on having) (kids|children)|have (kids|children)|childcare|married|marital|spouse|husband|wife)\b/i,
+    /\b(pregnan\w*|maternity|paternity|family (plans?|circumstances|situation|status|commitments)|plan(s|ning)? (to have|on having) (kids|children)|have (kids|children)|(young )?(kids|children)|childcare|married|marital|spouse|husband|wife)\b/i,
   ],
   ['religion', /\b(religio\w*|church|mosque|synagogue|temple|faith|pray\w*)\b/i],
   [

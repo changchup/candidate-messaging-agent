@@ -152,3 +152,15 @@ describe('checkRequest', () => {
     ]);
   });
 });
+
+describe('checkDraft: declined requests must not leak to the candidate', () => {
+  it('blocks a draft that explains a declined discriminatory note in the email', () => {
+    const r = checkDraft(
+      withBody(
+        `${good.body}\n\nP.S. I've left out the note about young children at home, as we don't consider family circumstances.`,
+      ),
+      ctx,
+    );
+    expect(r.violations).toEqual(['Message raises a protected topic (family status).']);
+  });
+});

@@ -93,5 +93,7 @@ export const DraftSchema = z.object({
   body: trimmed.min(1).max(5000),
   slotIds: z.array(z.string().min(1)).min(1).max(5),
   citedFacts: z.array(z.string().min(1)).max(20).default([]),
+  /** Private explanation for the recruiter (e.g. parts of their note that were declined). Never sent. */
+  recruiterNotes: z.string().trim().max(1000).optional(),
 });
 export type Draft = z.infer<typeof DraftSchema>;

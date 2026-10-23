@@ -28,7 +28,13 @@ export interface RunDto {
   candidateId: string;
   jobId: string;
   note: string;
-  draft: { subject: string; body: string; slotIds: string[]; citedFacts: string[] } | null;
+  draft: {
+    subject: string;
+    body: string;
+    slotIds: string[];
+    citedFacts: string[];
+    recruiterNotes?: string;
+  } | null;
   recipient: string | null;
   proposedSlots: { id: string; localStart: string; interviewer: string; durationMinutes: number }[];
   warnings: string[];
