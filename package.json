@@ -12,7 +12,7 @@
     "format": "prettier --write .",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "eval": "tsx --env-file-if-exists=.env evals/run.ts",
+    "eval": "tsx --env-file-if-exists=.env --disable-warning=ExperimentalWarning evals/run.ts",
     "format:check": "prettier --check src tests e2e evals scripts"
   },
   "keywords": [],
