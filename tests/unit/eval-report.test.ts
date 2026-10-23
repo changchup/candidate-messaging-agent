@@ -80,3 +80,17 @@ describe('compareToBaseline', () => {
     ]);
   });
 });
+
+describe('compareToBaseline for subset runs', () => {
+  it('ignores criterion-level drops when comparing a subset', () => {
+    const cases = [kase('a', ['relevance'])];
+    const base = summarise(cases, [trial('a', 1, { relevance: true })]);
+    const now = summarise(cases, [
+      trial('a', 1, { relevance: true }),
+      trial('a', 2, { relevance: false }),
+      trial('a', 3, { relevance: true }),
+    ]);
+    expect(compareToBaseline(now, base)).toEqual(['relevance: 100% -> 67%']);
+    expect(compareToBaseline(now, base, { caseLevelOnly: true })).toEqual([]);
+  });
+});

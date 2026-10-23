@@ -1,0 +1,80 @@
+# Pull requests and main: fast, deterministic, offline gates (fake LLM, no secrets).
+# Main only: a real-model eval smoke run as the pre-deploy gate.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, typecheck, unit/integration/API/data tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test -- --coverage --coverage.reporter=text --coverage.reporter=json-summary
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: coverage/
+
+  e2e:
+    name: Browser test (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+
+  eval-smoke:
+    name: Eval smoke (real model, deploy gate)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [checks, e2e]
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run smoke evals
+        if: env.ANTHROPIC_API_KEY != ''
+        run: npm run eval -- --tag smoke --repeats 1 --out reports/ci
+      - name: Skip notice
+        if: env.ANTHROPIC_API_KEY == ''
+        run: echo "::warning::ANTHROPIC_API_KEY secret not set; eval smoke gate skipped."
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-smoke-report
+          path: reports/ci/
+          if-no-files-found: ignore

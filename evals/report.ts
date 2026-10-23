@@ -117,9 +117,13 @@ export function summarise(cases: EvalCase[], trials: Trial[]): Summary {
 }
 
 /** Flags any criterion whose overall pass rate dropped more than the tolerance vs baseline. */
-export function compareToBaseline(current: Summary, baseline: Summary): string[] {
+export function compareToBaseline(
+  current: Summary,
+  baseline: Summary,
+  opts: { caseLevelOnly?: boolean } = {},
+): string[] {
   const out: string[] = [];
-  for (const k of CRITERIA) {
+  for (const k of opts.caseLevelOnly ? [] : CRITERIA) {
     const now = current.criteria[k]?.rate;
     const before = baseline.criteria[k]?.rate;
     if (now !== undefined && before !== undefined && before - now > REGRESSION_TOLERANCE) {

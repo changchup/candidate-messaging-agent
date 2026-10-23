@@ -1,0 +1,44 @@
+# Full AI evaluation: scheduled regression cycle, plus any PR that changes
+# the prompt, model config, tools, guardrails or the eval suite itself.
+name: Evals
+
+on:
+  schedule:
+    - cron: '0 14 * * 1' # weekly, Monday
+  workflow_dispatch:
+    inputs:
+      repeats:
+        description: Repeats per case
+        default: '5'
+  pull_request:
+    paths:
+      - 'src/agent/**'
+      - 'src/tools/**'
+      - 'src/config.ts'
+      - 'evals/**'
+
+jobs:
+  full-eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run full eval suite vs committed baseline
+        if: env.ANTHROPIC_API_KEY != ''
+        run: npm run eval -- --repeats ${{ inputs.repeats || '3' }} --out reports/ci
+      - name: Job summary
+        if: always()
+        run: test -f reports/ci/eval-report.md && sed '/^## Trials/,$d' reports/ci/eval-report.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report
+          path: reports/ci/
+          if-no-files-found: ignore

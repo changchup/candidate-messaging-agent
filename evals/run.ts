@@ -24,6 +24,7 @@ const { values: args } = parseArgs({
     repeats: { type: 'string', default: '3' },
     concurrency: { type: 'string', default: '4' },
     out: { type: 'string', default: 'reports' },
+    baseline: { type: 'string', default: 'reports/eval-baseline.json' },
     'update-baseline': { type: 'boolean', default: false },
     'no-judge': { type: 'boolean', default: false },
   },
@@ -131,7 +132,7 @@ const trials = await pool(
 );
 
 const summary = summarise(cases, trials);
-const baselinePath = `${args.out}/eval-baseline.json`;
+const baselinePath = args.baseline;
 let baseline: Report['summary'] | undefined;
 try {
   baseline = (JSON.parse(readFileSync(baselinePath, 'utf8')) as Report).summary;
@@ -150,7 +151,10 @@ const report: Report = {
     wallClockMs: Date.now() - started,
   },
   summary,
-  regressions: baseline ? compareToBaseline(summary, baseline) : [],
+  // Subset runs (--tag/--case) compare per case only; criterion rates over a subset are not comparable.
+  regressions: baseline
+    ? compareToBaseline(summary, baseline, { caseLevelOnly: Boolean(args.tag || args.case) })
+    : [],
   trials,
 };
 
