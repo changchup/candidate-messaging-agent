@@ -4,15 +4,22 @@ import { describe, expect, it } from 'vitest';
 import { buildTestApi, VIEWER } from '../helpers/api.ts';
 
 /** Independent oracle: read the raw CSV directly and compare with what the API presents. */
-const rawCandidates: Record<string, string>[] = parse(readFileSync('fixtures/data/candidates.csv', 'utf8'), {
+const rawCandidates: Record<string, string>[] = parse(
+  readFileSync('fixtures/data/candidates.csv', 'utf8'),
+  {
+    columns: true,
+  },
+);
+const rawJobs: Record<string, string>[] = parse(readFileSync('fixtures/data/jobs.csv', 'utf8'), {
   columns: true,
 });
-const rawJobs: Record<string, string>[] = parse(readFileSync('fixtures/data/jobs.csv', 'utf8'), { columns: true });
 
 describe('API presentation of source data', () => {
   it('presents every source candidate with correctly transformed fields', async () => {
     const { app } = buildTestApi();
-    const { candidates } = (await app.inject({ method: 'GET', url: '/api/candidates', headers: VIEWER })).json();
+    const { candidates } = (
+      await app.inject({ method: 'GET', url: '/api/candidates', headers: VIEWER })
+    ).json();
 
     expect(candidates).toHaveLength(rawCandidates.length);
     for (const raw of rawCandidates) {
@@ -41,23 +48,35 @@ describe('API presentation of source data', () => {
 
   it('flags exactly the candidates older than 90 days as stale', async () => {
     const { app } = buildTestApi();
-    const { candidates } = (await app.inject({ method: 'GET', url: '/api/candidates', headers: VIEWER })).json();
-    expect(candidates.filter((c: { stale: boolean }) => c.stale).map((c: { id: string }) => c.id)).toEqual(['c-003']);
+    const { candidates } = (
+      await app.inject({ method: 'GET', url: '/api/candidates', headers: VIEWER })
+    ).json();
+    expect(
+      candidates.filter((c: { stale: boolean }) => c.stale).map((c: { id: string }) => c.id),
+    ).toEqual(['c-003']);
   });
 
   it('shows jobs with salary range only when published', async () => {
     const { app } = buildTestApi();
-    const { jobs } = (await app.inject({ method: 'GET', url: '/api/jobs', headers: VIEWER })).json();
-    expect(jobs.map((j: { id: string; salaryRange: string | null }) => [j.id, j.salaryRange])).toEqual(
-      rawJobs.map((r) => [r.job_id, r.salary_range || null]),
-    );
+    const { jobs } = (
+      await app.inject({ method: 'GET', url: '/api/jobs', headers: VIEWER })
+    ).json();
+    expect(
+      jobs.map((j: { id: string; salaryRange: string | null }) => [j.id, j.salaryRange]),
+    ).toEqual(rawJobs.map((r) => [r.job_id, r.salary_range || null]));
   });
 
   it('reports rejected rows when the export is malformed', async () => {
     const { app } = buildTestApi({ env: { DATA_DIR: 'fixtures/data/malformed-set' } });
-    const { reports } = (await app.inject({ method: 'GET', url: '/api/data/validation', headers: VIEWER })).json();
+    const { reports } = (
+      await app.inject({ method: 'GET', url: '/api/data/validation', headers: VIEWER })
+    ).json();
     expect(reports).toEqual([
-      { file: 'candidates.csv', loaded: 1, rejected: expect.arrayContaining([{ line: 4, errors: ['email: must be a valid email'] }]) },
+      {
+        file: 'candidates.csv',
+        loaded: 1,
+        rejected: expect.arrayContaining([{ line: 4, errors: ['email: must be a valid email'] }]),
+      },
       { file: 'jobs.csv', loaded: 4, rejected: [] },
       { file: 'slots.csv', loaded: 1, rejected: expect.any(Array) },
     ]);

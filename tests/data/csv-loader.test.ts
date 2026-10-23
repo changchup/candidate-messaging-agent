@@ -10,7 +10,14 @@ describe('candidates.csv', () => {
   it('loads every row of the clean export', () => {
     expect(rejected).toEqual([]);
     expect(records.map((c) => c.id)).toEqual([
-      'c-001', 'c-002', 'c-003', 'c-004', 'c-005', 'c-006', 'c-007', 'c-008',
+      'c-001',
+      'c-002',
+      'c-003',
+      'c-004',
+      'c-005',
+      'c-006',
+      'c-007',
+      'c-008',
     ]);
   });
 
@@ -46,7 +53,10 @@ describe('candidates.csv', () => {
 });
 
 describe('malformed candidate export', () => {
-  const { records, rejected } = loadCsvFile(`${fixtures}/malformed-set/candidates.csv`, CandidateRowSchema);
+  const { records, rejected } = loadCsvFile(
+    `${fixtures}/malformed-set/candidates.csv`,
+    CandidateRowSchema,
+  );
 
   it('keeps valid rows and rejects bad ones with line numbers and reasons', () => {
     expect(records.map((c) => c.id)).toEqual(['c-900']);
@@ -70,7 +80,8 @@ describe('jobs.csv', () => {
   });
 
   it('rejects an unknown interview format', () => {
-    const csv = 'job_id,title,team,location,hiring_manager,interview_format\nj-9,T,X,Y,Z,carrier-pigeon\n';
+    const csv =
+      'job_id,title,team,location,hiring_manager,interview_format\nj-9,T,X,Y,Z,carrier-pigeon\n';
     expect(parseCsv(csv, JobRowSchema).rejected[0]?.errors).toEqual([
       'interview_format: must be video, onsite or phone',
     ]);
