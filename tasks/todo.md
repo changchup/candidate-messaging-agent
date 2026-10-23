@@ -12,7 +12,7 @@ See [`plan.md`](./plan.md) and [`../SPEC.md`](../SPEC.md). Each task ends with g
 - [ ] **2. Domain schemas, CSV fixtures, loaders**
   - Acceptance: zod schemas for Candidate/Job/Slot/Draft; CSV loader returns `{records, rejected[{row, errors}]}`; normalises emails (lowercase/trim), names, ISO timestamps (UTC); malformed fixture rows rejected with reasons.
   - Verify: `npm test -- tests/data` — valid rows map exactly; each malformed variant rejected with expected reason.
-  - Files: `src/domain/*.ts`, `src/data/csv-loader.ts`, `fixtures/data/{candidates,jobs,slots}.csv`, `fixtures/data/malformed/*.csv`, `tests/data/csv-loader.test.ts`
+  - Files: `src/domain/*.ts`, `src/data/csv-loader.ts`, `fixtures/data/{candidates,jobs,slots}.csv`, `fixtures/data/malformed-set/*.csv`, `tests/data/csv-loader.test.ts`
 
 - [ ] **3. Repositories and tools**
   - Acceptance: in-memory repos from loaded data; `get_candidate` (adds `stale` flag at >90 days via injected clock), `get_job`, `get_interview_slots` (future only; malformed-source mode returns invalid payload), `send_message` mock provider (`up|down`); tool results are `ok|err` with codes.
